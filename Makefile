@@ -8,13 +8,14 @@ SRC = main.c
 
 OBJ = $(SRC:.c=.o)
 
-# LIBFTDIR = ./libft/
+LIBFTDIR = ./libft/
 
-# LIBFTNAME = libft.a
+LIBFTNAME = libft.a
 
 all : $(NAME)
 
 $(NAME) : $(OBJ)
+	@make -s -C $(LIBFTDIR)
 	@$(CC) $(OBJ) $(LIBFTDIR)$(LIBFTNAME) -o $(NAME)
 
 .c.o :

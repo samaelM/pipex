@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/09 16:05:21 by maemaldo         ###   ########.fr       */
+/*   Created: 2024/01/05 14:46:08 by maemaldo          #+#    #+#             */
+/*   Updated: 2024/04/02 12:31:55 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
-#include "libft/libft.h"
+#include "libft.h"
 
-typedef struct s_pipex
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		tube[2];
-	int		infile;
-	int		outfile;
-	char	*paths;
-	char	**cmd_paths;
-	char	**cmd_args;
-	char	*cmd;
-}			t_pipex;
+	t_list	*result;
+	t_list	*node;
 
-#endif
+	if (!lst || !f || !del)
+		return (NULL);
+	result = NULL;
+	while (lst)
+	{
+		node = ft_lstnew(f(lst->content));
+		if (!node)
+		{
+			ft_lstclear(&result, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&result, node);
+		lst = lst->next;
+	}
+	return (result);
+}

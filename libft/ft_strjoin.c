@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/09 16:05:21 by maemaldo         ###   ########.fr       */
+/*   Created: 2024/01/05 14:48:28 by maemaldo          #+#    #+#             */
+/*   Updated: 2024/01/05 14:48:29 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
-#include "libft/libft.h"
+#include "libft.h"
 
-typedef struct s_pipex
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		tube[2];
-	int		infile;
-	int		outfile;
-	char	*paths;
-	char	**cmd_paths;
-	char	**cmd_args;
-	char	*cmd;
-}			t_pipex;
+	char	*dest;
+	size_t	i;
+	size_t	j;
 
-#endif
+	dest = malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		dest[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		dest[j++] = s2[i];
+		i++;
+	}
+	dest[j] = 0;
+	return (dest);
+}

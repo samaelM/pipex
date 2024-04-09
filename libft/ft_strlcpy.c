@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/09 16:05:21 by maemaldo         ###   ########.fr       */
+/*   Created: 2024/01/05 14:48:43 by maemaldo          #+#    #+#             */
+/*   Updated: 2024/01/11 16:17:28 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
-#include "libft/libft.h"
+#include "libft.h"
 
-typedef struct s_pipex
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		tube[2];
-	int		infile;
-	int		outfile;
-	char	*paths;
-	char	**cmd_paths;
-	char	**cmd_args;
-	char	*cmd;
-}			t_pipex;
+	size_t	i;
 
-#endif
+	i = 0;
+	while (src[i] && i + 1 < dstsize)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (dstsize > 0)
+	{
+		dst[i] = '\0';
+		i++;
+	}
+	return (ft_strlen(src));
+}
