@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:21:11 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/03 12:45:31 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/09 14:46:03 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,20 +92,20 @@ int	main(int argc, char **argv, char **envp)
 	char	*arg[] = {NULL};
 	char	*cmd1;
 	char	*cmd2;
-	char	*outfile;
-	char	*test[] = {};
-	int		i;
+	// char	*outfile;
+	// char	*test[] = {};
+	// int		i;
 
 	if (argc != 5)
 		return (1);
 	pipex.infile = open(argv[1], O_RDONLY);
 	if (pipex.infile < 0)
-		ft_err_exit("cheh1");
+		ft_err_exit("pas de file 1");
 	pipex.outfile = open(argv[4], O_RDONLY);
 	if (pipex.outfile < 0)
-		ft_err_exit("cheh2");
+		ft_err_exit("pas de file 2");
 	if (pipe(pipex.tube) < 0)
-		ft_err_exit("cheh3");
+		ft_err_exit("pipex ne pipex pas");
 	pipex.paths = ft_find_path(envp);
 	cmd2 = argv[3];
 	cmd1 = argv[2];
