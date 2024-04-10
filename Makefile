@@ -19,7 +19,7 @@ $(NAME) : $(OBJ)
 	@$(CC) $(OBJ) $(LIBFTDIR)$(LIBFTNAME) -o $(NAME)
 
 .c.o :
-	@$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -c -o $@ $<
 
 clean :
 	@rm $(OBJ)
