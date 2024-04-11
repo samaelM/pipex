@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Werror -Wextra -Wall
 
-SRC = main.c
+SRC = pipex.c pipex_utils.c
 
 OBJ = $(SRC:.c=.o)
 
