@@ -22,9 +22,10 @@ $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) -g -c -o $@ $<
 
 clean :
-	@rm $(OBJ)
+	@rm -f $(OBJ)
 
 fclean : clean
 	@rm -f $(NAME)
+	@make -s -C $(LIBFTDIR) fclean
 
 re : fclean all

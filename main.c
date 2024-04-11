@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:21:11 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/10 18:45:39 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:24:45 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,14 @@
 void	ft_free_tab(char **tab)
 {
 	int	i;
-	// int fd;
 
 	i = 0;
-	// fd = open("text", O_RDWR);
-	// 	ft_putstr_fd("tab[i]", fd);
-	while (tab[i])
-		// ft_putstr_fd(tab[i], fd);
-		free(tab[i++]);
-	free(tab);
-	// close(fd);
+	if (tab)
+	{
+		while (tab[i])
+			free(tab[i++]);
+		free(tab);
+	}
 }
 
 char	*ft_get_cmd_path(char **paths, char *cmd)
@@ -34,7 +32,7 @@ char	*ft_get_cmd_path(char **paths, char *cmd)
 	char	*res;
 
 	i = 0;
-	while (paths[i])
+	while (paths && paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		res = ft_strjoin(tmp, cmd);
@@ -52,9 +50,11 @@ char	*ft_find_path(char **env)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(env[i], "PATH=", 5))
+	while (env[i] && ft_strncmp(env[i], "PATH=", 5))
 		i++;
-	return (env[i] + 5);
+	if (env[i] && ft_strncmp(env[i], "PATH=", 5))
+		return (env[i] + 5);
+	return (NULL);
 }
 
 void	ft_err_exit(char *msg)
@@ -63,28 +63,36 @@ void	ft_err_exit(char *msg)
 	exit(0);
 }
 
-void	ft_cmd1(t_pipex pipex, char *argv[], char *envp[])
+void	ft_cmd1(t_pipex pipex, char *arg, char *envp[])
 {
-	pipex.cmd_args = ft_split(argv[2], ' ');
+	pipex.cmd_args = ft_split(arg, ' ');
 	pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args[0]);
 	dup2(pipex.tube[1], 1);
 	close(pipex.tube[0]);
 	dup2(pipex.infile, 0);
-	execve(pipex.cmd, pipex.cmd_args, envp);
+	if (pipex.cmd)
+	{
+		execve(pipex.cmd, pipex.cmd_args, envp);
+		free(pipex.cmd);
+	}
 	ft_free_tab(pipex.cmd_args);
-	free(pipex.cmd);
+	close(pipex.tube[0]);
 }
 
-void	ft_cmd2(t_pipex pipex, char *argv[], char *envp[])
+void	ft_cmd2(t_pipex pipex, char *arg, char *envp[])
 {
-	pipex.cmd_args = ft_split(argv[3], ' ');
+	pipex.cmd_args = ft_split(arg, ' ');
 	pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args[0]);
 	dup2(pipex.tube[0], 0);
 	close(pipex.tube[1]);
 	dup2(pipex.outfile, 1);
-	execve(pipex.cmd, pipex.cmd_args, envp);
+	if (pipex.cmd)
+	{
+		execve(pipex.cmd, pipex.cmd_args, envp);
+		free(pipex.cmd);
+	}
 	ft_free_tab(pipex.cmd_args);
-	free(pipex.cmd);
+	close(pipex.tube[1]);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -105,13 +113,11 @@ int	main(int argc, char **argv, char **envp)
 	pipex.cmd_paths = ft_split(pipex.paths, ':');
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
-		ft_cmd1(pipex, argv, envp);
+		ft_cmd1(pipex, argv[2], envp);
 	pipex.pid2 = fork();
 	if (pipex.pid2 == 0)
-		ft_cmd2(pipex, argv, envp);
+		ft_cmd2(pipex, argv[3], envp);
 	ft_free_tab(pipex.cmd_paths);
-	close(pipex.tube[0]);
-	close(pipex.tube[1]);
 	waitpid(pipex.pid1, NULL, 0);
 	waitpid(pipex.pid2, NULL, 0);
 	return (0);
