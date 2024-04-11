@@ -6,18 +6,18 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/11 14:43:46 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:24:17 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+# include "libft/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include "libft/libft.h"
 
 typedef struct s_pipex
 {
@@ -32,9 +32,9 @@ typedef struct s_pipex
 	char	*cmd;
 }			t_pipex;
 
-void	ft_free_tab(char **tab);
-char	*ft_get_cmd_path(char **paths, char *cmd);
-char	*ft_find_path(char **env);
-void	ft_err_exit(char *msg);
+void		ft_free_tab(char **tab);
+char		*ft_get_cmd_path(char **paths, char *cmd);
+char		*ft_find_path(char **env);
+void		ft_err_exit(char *msg);
 
 #endif

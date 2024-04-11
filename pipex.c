@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:21:11 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/11 14:45:41 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:28:48 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,23 @@ void	ft_cmd2(t_pipex pipex, char *arg, char *envp[])
 	ft_free_tab(pipex.cmd_args);
 }
 
+void	ft_open_files(char **argv, t_pipex *pipex)
+{
+	pipex->infile = open(argv[1], O_RDONLY);
+	if (pipex->infile < 0)
+		ft_err_exit("pas de file 1");
+	pipex->outfile = open(argv[4], O_TRUNC | O_RDWR);
+	if (pipex->outfile < 0)
+		ft_err_exit("pas de file 2");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 
 	if (argc != 5)
 		return (1);
-	pipex.infile = open(argv[1], O_RDONLY);
-	if (pipex.infile < 0)
-		ft_err_exit("pas de file 1");
-	pipex.outfile = open(argv[4], O_TRUNC | O_RDWR);
-	if (pipex.outfile < 0)
-		ft_err_exit("pas de file 2");
+	ft_open_files(argv, &pipex);
 	if (pipe(pipex.tube) < 0)
 		ft_err_exit("pipex ne pipex pas");
 	pipex.paths = ft_find_path(envp);
