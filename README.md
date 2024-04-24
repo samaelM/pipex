@@ -21,7 +21,7 @@ make
 execute like this :
 
 ```bash
-./pipe [infile] [cmd1] [cmd2] [outfile]
+./pipex [infile] [cmd1] [cmd2] [outfile]
 ```
 
 this should recreate the function of bash pipe | more exactly it recreates this setup

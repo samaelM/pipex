@@ -1,6 +1,6 @@
 NAME = pipex
 
-CC = cc
+CC = clang
 
 CFLAGS = -Werror -Wextra -Wall
 
