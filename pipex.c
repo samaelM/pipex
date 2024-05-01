@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:21:11 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/24 17:47:29 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:40:01 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	ft_close_all(t_pipex *pipex)
 {
+	// ⚠️ protege le dernier close fdp
 	if (close(pipex->tube[0]) == -1)
 		printf("close err1");
 	if (close(pipex->tube[1]) == -1)
@@ -26,6 +27,7 @@ static int	ft_close_all(t_pipex *pipex)
 
 int	ft_cmd1(t_pipex pipex, char *arg, char *envp[])
 {
+	// ⚠️ doit proteger les close()
 	if (dup2(pipex.tube[1], 1) == -1)
 		return (ft_close_all(&pipex));
 	close(pipex.tube[0]);
@@ -50,6 +52,7 @@ int	ft_cmd1(t_pipex pipex, char *arg, char *envp[])
 
 int	ft_cmd2(t_pipex pipex, char *arg, char *envp[])
 {
+	// ⚠️ doit proteger les close()
 	if (dup2(pipex.tube[0], 0) == -1)
 		return (ft_close_all(&pipex));
 	close(pipex.tube[1]);
@@ -86,7 +89,7 @@ void	ft_open_files(char **argv, t_pipex *pipex)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
-
+	// ⚠️ ameliorer les erreurs
 	if (argc != 5)
 		return (1);
 	ft_open_files(argv, &pipex);
