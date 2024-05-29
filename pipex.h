@@ -6,13 +6,15 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/11 15:24:17 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:34:09 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+// # define yo write(2, "wsh\n", 4);
 # include "libft/libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>

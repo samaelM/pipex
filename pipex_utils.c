@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:42:42 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/16 17:42:06 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:20:24 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ char	*ft_get_cmd_path(char **paths, char *cmd)
 	char	*res;
 
 	i = 0;
-	while (paths && paths[i])
+	if (access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
+	while (paths && paths[i] && (cmd[0] != '.' && cmd[0] != '/'))
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		if (tmp == NULL)
@@ -41,13 +43,11 @@ char	*ft_get_cmd_path(char **paths, char *cmd)
 		if (res == NULL)
 			return (NULL);
 		free(tmp);
-		if (access(res, F_OK) == 0)
+		if (access(res, F_OK | X_OK) == 0)
 			return (res);
 		free(res);
 		i++;
 	}
-	if (access(cmd, F_OK) == 0)
-		return (cmd);
 	return (NULL);
 }
 

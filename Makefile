@@ -2,7 +2,7 @@ NAME = pipex
 
 CC = clang
 
-CFLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall -g
 
 SRC = pipex.c pipex_utils.c
 
