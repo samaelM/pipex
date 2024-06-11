@@ -6,14 +6,14 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/05/24 18:34:09 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:43:42 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 // # define yo write(2, "wsh\n", 4);
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -35,8 +35,9 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		ft_free_tab(char **tab);
-char		*ft_get_cmd_path(char **paths, char *cmd);
+char		*ft_get_cmd_path(char **paths, char **cmd, char **envp);
 char		*ft_find_path(char **env);
-void		ft_err_exit(char *msg);
+void		ft_err_exit(char *msg, char *arg);
+char		**ft_token(char const *s, char c);
 
 #endif

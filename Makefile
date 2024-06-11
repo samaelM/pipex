@@ -4,7 +4,7 @@ CC = clang
 
 CFLAGS = -Werror -Wextra -Wall -g
 
-SRC = pipex.c pipex_utils.c
+SRC = src/pipex.c src/pipex_utils.c src/ft_token.c
 
 OBJ = $(SRC:.c=.o)
 

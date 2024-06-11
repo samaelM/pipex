@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:21:11 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/05/29 13:33:19 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:31:38 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 static int	ft_close_all(t_pipex *pipex)
 {
-	if (close(pipex->tube[0]) == -1)
-		printf("close err1");
-	if (close(pipex->tube[1]) == -1)
-		printf("close err1");
-	if (close(pipex->infile) == -1)
-		printf("close err infile");
+	close(pipex->tube[0]);
+	close(pipex->tube[1]);
+	close(pipex->infile);
 	close(pipex->outfile);
 	return (1);
 }
@@ -34,18 +31,19 @@ int	ft_cmd1(t_pipex pipex, char *arg, char *envp[])
 		return (ft_close_all(&pipex));
 	close(pipex.infile);
 	close(pipex.outfile);
-	pipex.cmd_args = ft_split(arg, ' ');
+	pipex.cmd_args = ft_token(arg, ' ');
 	if (pipex.cmd_args && pipex.cmd_args[0])
 	{
-		pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args[0]);
-		if (pipex.cmd)
+		pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args, envp);
+		if (pipex.cmd && execve(pipex.cmd, pipex.cmd_args, envp) == -1)
 		{
-			execve(pipex.cmd, pipex.cmd_args, envp);
-			free(pipex.cmd);
+			perror(pipex.cmd);
 		}
 	}
+	else
+		ft_putstr_fd("command not found:\n", 2);
 	ft_free_tab(pipex.cmd_args);
-	return (1);
+	return (127);
 }
 
 int	ft_cmd2(t_pipex pipex, char *arg, char *envp[])
@@ -58,16 +56,17 @@ int	ft_cmd2(t_pipex pipex, char *arg, char *envp[])
 		return (ft_close_all(&pipex));
 	close(pipex.infile);
 	close(pipex.outfile);
-	pipex.cmd_args = ft_split(arg, ' ');
+	pipex.cmd_args = ft_token(arg, ' ');
 	if (pipex.cmd_args && pipex.cmd_args[0])
 	{
-		pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args[0]);
-		if (pipex.cmd)
+		pipex.cmd = ft_get_cmd_path(pipex.cmd_paths, pipex.cmd_args, envp);
+		if (pipex.cmd && execve(pipex.cmd, pipex.cmd_args, envp) == -1)
 		{
-			execve(pipex.cmd, pipex.cmd_args, envp);
-			free(pipex.cmd);
+			perror(pipex.cmd);
 		}
 	}
+	else
+		ft_putstr_fd("command not found:\n", 2);
 	ft_free_tab(pipex.cmd_args);
 	return (1);
 }
@@ -76,13 +75,10 @@ void	ft_open_files(char **argv, t_pipex *pipex)
 {
 	pipex->infile = open(argv[1], O_RDONLY);
 	if (pipex->infile < 0)
-		ft_err_exit("infile ne infile pas");
+		perror(argv[1]);
 	pipex->outfile = open(argv[4], O_CREAT | O_TRUNC | O_RDWR, 0666);
 	if (pipex->outfile < 0)
-	{
-		close(pipex->infile);
-		ft_err_exit("outfile ne outfile pas");
-	}
+		perror(argv[4]);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -91,9 +87,10 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 		return (1);
+	ft_memset(&pipex, 0, sizeof(t_pipex));
 	ft_open_files(argv, &pipex);
 	if (pipe(pipex.tube) < 0)
-		ft_err_exit("pipex ne pipex pas");
+		ft_putstr_fd("pipe() failed\n", 2);
 	pipex.paths = ft_find_path(envp);
 	pipex.cmd_paths = ft_split(pipex.paths, ':');
 	pipex.pid1 = fork();
@@ -103,14 +100,14 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ft_cmd1(pipex, argv[2], envp);
 		ft_free_tab(pipex.cmd_paths);
-		return (0);
+		return (127);
 	}
 	pipex.pid2 = fork();
 	if (pipex.pid2 == 0)
 	{
 		ft_cmd2(pipex, argv[3], envp);
 		ft_free_tab(pipex.cmd_paths);
-		return (0);
+		return (127);
 	}
 	close(pipex.tube[1]);
 	close(pipex.tube[0]);
@@ -122,4 +119,3 @@ int	main(int argc, char **argv, char **envp)
 	ft_free_tab(pipex.cmd_paths);
 	return (0);
 }
-
