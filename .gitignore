@@ -4,3 +4,5 @@ infile
 outfile
 *.o
 pipex
+.*
+tester_pipex.sh

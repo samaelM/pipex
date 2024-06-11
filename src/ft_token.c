@@ -6,11 +6,56 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:14:10 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/06/11 14:41:34 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:47:19 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+/*    ft_strtrimtoken
+basiquement un melange de strdup et strtrim :
+on parcoure str si on tombe sur un guillemet: une autre boucle check si il y a un espace si oui
+alors tu copie normalement sinon tu copie sans les guillemets,
+	tout ca en enlevant les espaces et
+les guillemets au debut et a la fin de str
+*/
+
+char	*ft_strtrimtoken(const char *str)
+{
+	const char	*start = str;
+	const char	*end = str + ft_strlen(str) - 1;
+	int			enclosed_in_quotes;
+	size_t		len;
+	char		*result;
+	char		*dest;
+
+	if (!str)
+		return (NULL);
+	while (*str && *str == ' ')
+		str++;
+	while (end > start && *str == ' ')
+		end--;
+	enclosed_in_quotes = 0;
+	if ((*start == '"' && *end == '"') || (*start == '\'' && *end == '\''))
+	{
+		enclosed_in_quotes = 1;
+		start++;
+		end--;
+	}
+	len = end - start + 1;
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
+	dest = result;
+	while (start <= end)
+	{
+		if (enclosed_in_quotes || *str != ' ')
+			*dest++ = *start;
+		start++;
+	}
+	*dest = '\0';
+	return (result);
+}
 
 int	ft_clear(char **str)
 {
@@ -21,10 +66,10 @@ int	ft_clear(char **str)
 	while (str[i])
 	{
 		tmp = str[i];
-		str[i] = ft_strtrim(str[i], " \"\'");
+		str[i] = ft_strtrimtoken(str[i]);
 		free(tmp);
 		if (!str[i])
-			return(ft_free_tab(str), -1);
+			return (ft_free_tab(str), -1);
 		i++;
 	}
 	return (0);
