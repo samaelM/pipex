@@ -6,13 +6,13 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:14:10 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/06/12 18:17:18 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:03:06 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char **ft_clear(char **str)
+char	**ft_clear(char **str)
 {
 	int		i;
 	char	*tmp;
