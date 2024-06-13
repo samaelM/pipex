@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:06:37 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/06/11 16:03:47 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:12:40 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ char		*ft_get_cmd_path(char **paths, char **cmd, char **envp);
 char		*ft_find_path(char **env);
 void		ft_err_exit(char *msg, char *arg);
 char		**ft_token(char const *s, char c);
-char	*ft_strtrimbis(char const *s1, char *set);
+char		*ft_strtrimtoken(char *str);
 
 #endif

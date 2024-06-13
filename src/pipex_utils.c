@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:42:42 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/06/10 21:00:47 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:12:14 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_free_tab(char **tab)
 			free(tab[i++]);
 		free(tab);
 	}
+	tab = NULL;
 }
 
 char	*ft_get_cmd_path(char **paths, char **cmd, char **envp)
@@ -42,11 +43,7 @@ char	*ft_get_cmd_path(char **paths, char **cmd, char **envp)
 		if (res == NULL)
 			return (NULL);
 		if (access(res, F_OK | X_OK) == 0)
-		{
-			free(cmd[0]);
-			cmd[0] = res;
-			return (res);
-		}
+			return (free(cmd[0]), cmd[0] = res, res);
 		free(res);
 		i++;
 	}
